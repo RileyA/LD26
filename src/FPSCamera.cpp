@@ -12,12 +12,13 @@ namespace Oryx
 		createSlot("look",this,&FPSCamera::look);
 		EventHandler::getDestination("OISSubsystem")->getSignal("mouseMoved")
 			->addListener(getSlot("look"));
+    createSignal("moved");
 
 		mOgre = Engine::getPtr()->getSubsystem("OgreSubsystem")->castType<OgreSubsystem>();
 		mOIS = Engine::getPtr()->getSubsystem("OISSubsystem")->castType<OISSubsystem>();
 
 		mCamera = mOgre->createCamera();
-		mCamera->setFarClip(100.f);
+		mCamera->setFarClip(500.f);
 		mCamera->setNearClip(0.001f);
 		mOgre->setActiveCamera(mCamera);
 
@@ -85,5 +86,9 @@ namespace Oryx
 	{
 		return mCamera->getAbsoluteDirection();
 	}
-}
 
+  void FPSCamera::setPosition(Vector3 position) {
+    mPosNode->setPosition(position);
+    getSignal("moved")->send(position);
+  }
+}

@@ -17,6 +17,8 @@ namespace Oryx
 		void update(Real delta);
 		void look(const Message& msg);
 
+    void setPosition(Vector3 position);
+
 		Vector3 getPosition();
 		Vector3 getDirection();
 

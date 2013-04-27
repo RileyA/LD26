@@ -33,17 +33,17 @@ void PlayState::init()
 	Colour col = Colour(10/255.f,15/255.f,20/255.f);
 	Colour col2 = Colour(10/255.f,15/255.f,20/255.f);
 	mGfx->setBackgroundColor(col2);
-	mGfx->setLinearFog(50.f,90.f,col2);
+	mGfx->setLinearFog(150.f,200.f,col2);
 
 	// standard FPS-style camera (no character controller just yet)
 	mCam = new FPSCamera();
-  mCam->mPosNode->setPosition(Vector3(0,1,3));
+  mCam->mPosNode->setPosition(Vector3(0,20,3));
 
 	// set up debug overlay
 	Batch* b = mGUI->createBatch("test", "../media/gui/gui.oyster");
 
-  Mesh* m = mGfx->createMesh("Cube.mesh");
-  mGfx->getRootSceneNode()->addChild(m);
+  //Mesh* m = mGfx->createMesh("Cube.mesh");
+  //mGfx->getRootSceneNode()->addChild(m);
 	
 	Caption* c = new Caption(b, 0);
 	c->setCaption("FPS: 60");
@@ -54,6 +54,10 @@ void PlayState::init()
 	mUI = mGfx->createScreenMesh("DebugUI");
 	b->getSignal("update")->addListener(mUI->getSlot("update"));
 	mUI->setHidden(false);
+
+  m_terrain = new TerrainManager();
+
+  mCam->getSignal("moved")->addListener(m_terrain->getSlot("playerMoved"));
 }
 //---------------------------------------------------------------------------
 
@@ -68,19 +72,18 @@ void PlayState::update(Real delta)
 	Real len = moveVect.normalize();
 	len *= 5.f;
 
-  mCam->mPosNode->setPosition(mCam->mPosNode->getPosition()
-    + moveVect * len);
+  mCam->setPosition(mCam->getPosition() + moveVect * len);
 
 	// same o' same o'
 	if(mInput->wasKeyPressed("KC_ESCAPE"))
 		mEngine->shutdown();
 
 	// screenshots
-	if(mInput->wasKeyPressed("KC_P"))
-		mGfx->takeScreenshot(TimeManager::getPtr()->getTimestamp());
+	//if(mInput->wasKeyPressed("KC_P"))
+	//	mGfx->takeScreenshot(TimeManager::getPtr()->getTimestamp());
 
 	// update debug overlay
-	mFpsText->setCaption("FPS: "+ StringUtils::toString(1.f/delta));
+	//mFpsText->setCaption("FPS: "+ StringUtils::toString(1.f/delta));
 }
 //---------------------------------------------------------------------------
 

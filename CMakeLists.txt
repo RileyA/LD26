@@ -24,6 +24,10 @@ set(ORYX_SUBSYSTEM_LIB_DIR "/usr/lib" CACHE STRING "Where to look for Oryx Subsy
 set(BOOST_INCLUDE_DIR "/usr/include" CACHE STRING "Where to look for boost includes.")
 set(BOOST_LIB_DIR "/usr/lib" CACHE STRING "Where to look for boost libs.")
 
+# libnoise
+set(NOISE_INCLUDE_DIR "/usr/include" CACHE STRING "Where to look for libnoise includes.")
+set(NOISE_LIB_DIR "/usr/lib" CACHE STRING "Where to look for libnoise libs.")
+
 # all the oryx libs
 set(ORYX_LIB ${ORYX_LIB_DIR}/${LIB_PREFIX}OryxEngine${LIB_POSTFIX})
 if (WIN32)
@@ -32,12 +36,14 @@ if (WIN32)
 	set(GUI_LIB ${ORYX_LIB_DIR}/GUISubsystem/${LIB_PREFIX}GUISubsystem${LIB_POSTFIX})
 	set(BULLET_LIB ${ORYX_LIB_DIR}/BulletSubsystem/${LIB_PREFIX}BulletSubsystem${LIB_POSTFIX})
 	set(OIS_LIB ${ORYX_LIB_DIR}/OISSubsystem/${LIB_PREFIX}OISSubsystem${LIB_POSTFIX})
+  set(NOISE_LIB ${NOISE_LIB_DIR}/${LIB_PREFIX}libnoise${LIB_POSTFIX})
 else ()
 	set(OGRE_LIB ${ORYX_LIB_DIR}/${LIB_PREFIX}OgreSubsystem${LIB_POSTFIX})
 	set(AL_LIB ${ORYX_LIB_DIR}/${LIB_PREFIX}ALSubsystem${LIB_POSTFIX})
 	set(GUI_LIB ${ORYX_LIB_DIR}/${LIB_PREFIX}GUISubsystem${LIB_POSTFIX})
 	set(BULLET_LIB ${ORYX_LIB_DIR}/${LIB_PREFIX}BulletSubsystem${LIB_POSTFIX})
 	set(OIS_LIB ${ORYX_LIB_DIR}/${LIB_PREFIX}OISSubsystem${LIB_POSTFIX})
+  set(NOISE_LIB ${NOISE_LIB_DIR}/${LIB_PREFIX}noise${LIB_POSTFIX})
 endif ()
 
 if (WIN32)

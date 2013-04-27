@@ -7,6 +7,7 @@
 #include "GUISubsystem/GUIPanel.h"
 #include "GUISubsystem/GUICaption.h"
 #include "GUISubsystem/GUIButton.h"
+#include "TerrainManager.h"
 
 class PlayState : public GameState
 {
@@ -36,6 +37,8 @@ private:
 
 	// Debug GUI captions
 	Caption* mFpsText;
+
+  TerrainManager* m_terrain;
 
 };
 

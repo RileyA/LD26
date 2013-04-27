@@ -21,3 +21,15 @@ material DebugWire
 		}
 	}
 }
+
+material Terrain {
+  technique {
+    pass {
+      ambient vertexcolour
+			cull_hardware none
+			cull_software none
+			lighting off
+      polygon_mode wireframe
+    }
+  }
+}

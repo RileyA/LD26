@@ -9,6 +9,7 @@
 #include "OgreSubsystem/OgreSubsystem.h"
 #include "GUISubsystem/GUISubsystem.h"
 #include "BulletSubsystem/BulletSubsystem.h"
+#include "iVec2.h"
 
 using namespace Oryx;
 
