@@ -22,9 +22,8 @@ void TerrainManager::playerMoved(const Message& msg) {
     Vector3 p = ms->data;
     Vector3 offset(TerrainTile::SIZE_X / -2.0, 0.f, TerrainTile::SIZE_Z / -2.0);
     Vector3 pos = p;// - offset;
-    iVec2 ipos(static_cast<int>(floor(pos.x)) / static_cast<int>(TerrainTile::SIZE_X / 2),
-      static_cast<int>(floor(pos.z)) / static_cast<int>(TerrainTile::SIZE_Z / 2));
-    //std::cout<<"pos: "<<ipos.x<<" "<<ipos.y<<"\n";
+    iVec2 ipos(static_cast<int>(floor(pos.x)) / static_cast<int>(TerrainTile::SIZE_X),
+      static_cast<int>(floor(pos.z)) / static_cast<int>(TerrainTile::SIZE_Z));
     updateTiles(ipos);
   }
 }
@@ -59,9 +58,12 @@ TerrainTile* TerrainManager::createTerrainTile(iVec2 pos) {
         lpos.y = height * 20;
 
         d.vertex(lpos + offset);
-        d.diffuse.push_back(0.2f + ((double)x / TerrainTile::VERTS_X) * 0.7f);
-        d.diffuse.push_back(0.5f);
-        d.diffuse.push_back(0.1f + ((double)z / TerrainTile::VERTS_Z) * 0.7f);
+        //d.diffuse.push_back(0.2f + ((double)x / TerrainTile::VERTS_X) * 0.7f);
+        //d.diffuse.push_back(0.1f + ((double)z / TerrainTile::VERTS_Z) * 0.7f);
+        float color = std::max(0.3, std::min(1.0, 0.3 + (lpos.y + 10.f) / 40.0));
+        d.diffuse.push_back(color);
+        d.diffuse.push_back(color);
+        d.diffuse.push_back(color);
         d.diffuse.push_back(1.f);
       }
     }
@@ -111,7 +113,7 @@ void TerrainManager::updateTiles(iVec2 pos) {
   for (std::map<iVec2, TerrainTile*>::iterator it = m_tiles.begin();
     it != m_tiles.end();) {
     iVec2 p = it->second->getPosition();
-    if (abs(p.x - pos.x) > UNPAGE_RADIUS) {
+    if (abs(p.x - pos.x) > UNPAGE_RADIUS || abs(p.y - pos.y) > UNPAGE_RADIUS) {
       killTerrainTile(it->second);
       m_tiles.erase(it++);
     } else {

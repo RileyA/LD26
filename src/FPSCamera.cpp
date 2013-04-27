@@ -18,8 +18,8 @@ namespace Oryx
 		mOIS = Engine::getPtr()->getSubsystem("OISSubsystem")->castType<OISSubsystem>();
 
 		mCamera = mOgre->createCamera();
-		mCamera->setFarClip(500.f);
-		mCamera->setNearClip(0.001f);
+		mCamera->setFarClip(1000.f);
+		mCamera->setNearClip(0.1f);
 		mOgre->setActiveCamera(mCamera);
 
 		mRollNode = mOgre->createSceneNode();

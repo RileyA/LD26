@@ -25,6 +25,8 @@ material DebugWire
 material Terrain {
   technique {
     pass {
+			cull_hardware none
+			cull_software none
       ambient vertexcolour
 			cull_hardware none
 			cull_software none

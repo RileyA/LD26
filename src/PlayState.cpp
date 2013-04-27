@@ -33,7 +33,7 @@ void PlayState::init()
 	Colour col = Colour(10/255.f,15/255.f,20/255.f);
 	Colour col2 = Colour(10/255.f,15/255.f,20/255.f);
 	mGfx->setBackgroundColor(col2);
-	mGfx->setLinearFog(150.f,200.f,col2);
+	//mGfx->setLinearFog(150.f,200.f,col2);
 
 	// standard FPS-style camera (no character controller just yet)
 	mCam = new FPSCamera();
@@ -70,7 +70,7 @@ void PlayState::update(Real delta)
 		(mInput->isKeyDown("KC_D")-mInput->isKeyDown("KC_A"));
 
 	Real len = moveVect.normalize();
-	len *= 5.f;
+	len *= 10.f;
 
   mCam->setPosition(mCam->getPosition() + moveVect * len);
 

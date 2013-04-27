@@ -7,10 +7,10 @@ int main(int argc, char** argv)
 	TimeManager::getPtr();
 
 	// create subsystems:
-	OgreSubsystem ogre(800,600,false);
+	OgreSubsystem ogre(1024,768,false);
 	OISSubsystem ois;
 	BulletSubsystem bull;
-	GUISubsystem gui(800,600);
+	GUISubsystem gui(1024,768);
 	ALSubsystem aSys;
 
 	// allocate engine and add subsystems
