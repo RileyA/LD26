@@ -1,0 +1,20 @@
+material DebugUI
+{
+	technique
+	{
+		pass
+		{
+			scene_blend alpha_blend
+			cull_hardware none
+			cull_software none
+			depth_check off	
+			lighting off
+			texture_unit
+			{
+				texture gui.png
+				filtering trilinear
+				//tex_address_mode clamp
+			}
+		}
+	}
+}

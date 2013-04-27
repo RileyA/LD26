@@ -1,0 +1,23 @@
+material DebugWire
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			//depth_check off	
+			lighting off
+      //polygon_mode wireframe
+      scene_blend alpha_blend
+      texture_unit
+      {
+        anim_texture save.png 32 2.5
+        scale 0.5 0.5
+        filtering aniosotropic
+        max_anisotropy 16
+        tex_address_mode wrap
+      }
+		}
+	}
+}
