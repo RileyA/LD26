@@ -35,6 +35,7 @@ set(OIS_LIB ${ORYX_LIB_DIR}/${LIB_PREFIX}OISSubsystem${LIB_POSTFIX})
 set(BOOST_THREAD_LIB ${BOOST_LIB_DIR}/${LIB_PREFIX}boost_thread${LIB_POSTFIX})
 
 include_directories("${ORYX_INCLUDE_DIR}")
+include_directories("${BOOST_INCLUDE_DIR}")
 include_directories("${ORYX_SUBSYSTEM_INCLUDE_DIR}")
 include_directories("src")
 
