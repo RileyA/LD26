@@ -30,6 +30,8 @@ private:
   OgreSubsystem* mGfx;
   BulletSubsystem* mPhysics;
 
+  Vector3 playerPos;
+
 };
 
 #endif

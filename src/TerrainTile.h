@@ -28,8 +28,8 @@ public:
     float radius;
   };
   
-  const static double SIZE_X = 100.0;
-  const static double SIZE_Z = 100.0;
+  const static double SIZE_X;
+  const static double SIZE_Z;
   const static int32_t VERTS_X = 90;
   const static int32_t VERTS_Z = 90;
 

@@ -30,8 +30,8 @@ int main(int argc, char** argv)
   //s->setLooping(false);
 
 	// add game state
-	eng->addState(new PlayState());
-	//eng->addState(new MenuState());
+	//eng->addState(new PlayState());
+	eng->addState(new MenuState());
 
 	// start up the engine
 	eng->start();

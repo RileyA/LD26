@@ -133,6 +133,8 @@ void PlayState::init()
   }
   m_terrain = new TerrainManager(mCam->getSignal("moved"));
 
+
+
   footsteps.addTexcoordSet();
   for (int i = 0; i < NUM_FOOTSTEPS; ++i) {
     footsteps.vertex(Vector3(0,-1000,0));

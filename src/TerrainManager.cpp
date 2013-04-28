@@ -72,6 +72,32 @@ void TerrainManager::updateTiles(iVec2 pos) {
   }
 }
 
+void TerrainManager::updateAllTiles(iVec2 pos) {
+  for (std::map<iVec2, TerrainTile*>::iterator it = m_tiles.begin();
+    it != m_tiles.end();) {
+    iVec2 p = it->second->getPosition();
+    if (it->second->isActive() 
+        && (abs(p.x - pos.x) > UNPAGE_RADIUS
+            || abs(p.y - pos.y) > UNPAGE_RADIUS)) {
+      it->second->deactivate();
+    } else {
+      ++it;
+    }
+  }
+
+  for (int i = -PAGE_RADIUS; i <= PAGE_RADIUS; ++i)
+    for (int j = -PAGE_RADIUS; j <= PAGE_RADIUS; ++j) {
+      iVec2 p = pos + iVec2(i, j);
+      if (!m_tiles.count(p)) {
+        createTerrainTile(p);
+        //std::cout<<"created " << i << " " << j << "\n";
+      } else if (!m_tiles[p]->isActive()) {
+        //std::cout<<"activated\n";
+        m_tiles[p]->reactivate();
+      }
+  }
+}
+
 double TerrainManager::sampleNoise(Vector3 pos) {
 
   // nice, slow rolling hills

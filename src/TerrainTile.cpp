@@ -2,6 +2,13 @@
 #include <libnoise/noise.h>
 #include "Powerup.h"
 
+
+const double TerrainTile::SIZE_X = 100.0;
+const double TerrainTile::SIZE_Z = 100.0;
+//const int32_t TerrainTile::VERTS_X = 90;
+//const int32_t TerrainTile::VERTS_Z = 90;
+
+
 TerrainTile::TerrainTile(iVec2 position, noise::module::Perlin* p, Signal* pmove)
   :m_position(position) {
   m_perlin = p;

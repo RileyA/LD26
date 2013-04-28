@@ -36,6 +36,7 @@ private:
   void killTerrainTile(iVec2 pos);
   void killTerrainTile(TerrainTile* t);
   void updateTiles(iVec2 pos);
+  void updateAllTiles(iVec2 pos);
   double sampleNoise(Vector3 pos);
 
 	noise::module::Perlin* m_perlin;

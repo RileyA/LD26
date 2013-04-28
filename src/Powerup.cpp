@@ -25,6 +25,11 @@ Powerup::~Powerup() {
 }
 
 void Powerup::update(Real delta) {
+  if (playerPos.distance(position) > 200.f) {
+    m_mesh->setVisible(false);
+  } else {
+    m_mesh->setVisible(true);
+  }
   return;
 }
 
@@ -32,7 +37,8 @@ void Powerup::playerMoved(const Message& msg) {
   bool dead = false;
   if(const MessageAny<Vector3>* ms = message_cast<Vector3>(msg))
   {
-    if (ms->data.squaredDistance(position) < 2.25f) {
+    playerPos = ms->data;
+    if (ms->data.squaredDistance(position) < 2.f) {
       if (super) {
         dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/powerup.ogg")->setGain(0.f, 1.f, 1.f);;
         PlayState::playerEnergy = PlayState::playerEnergyCap = PlayState::playerEnergyCap + 10;
