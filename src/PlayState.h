@@ -66,6 +66,7 @@ private:
   bool left_foot;
   float footTime;
   Mesh* fsmesh;
+  std::vector<Enemy*> enemies;
 
 };
 

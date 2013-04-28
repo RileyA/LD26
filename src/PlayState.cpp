@@ -31,6 +31,13 @@ void PlayState::init()
 	mGUI = dynamic_cast<GUISubsystem*>(mEngine->getSubsystem("GUISubsystem"));
 	mPhysics = dynamic_cast<BulletSubsystem*>(mEngine->getSubsystem("BulletSubsystem"));
 
+  mAudio->loadSound("../media/audio/explode.ogg");
+  mAudio->loadSound("../media/audio/attack.ogg");
+  mAudio->loadSound("../media/audio/jump.ogg");
+  mAudio->loadSound("../media/audio/fail.ogg");
+  mAudio->loadSound("../media/audio/powerup.ogg");
+  mAudio->loadSound("../media/audio/powerup2.ogg");
+
 	// start up input, grab the mouse
 	mInput->initInput(mGfx->getWindowHandle(), true);
 
@@ -53,14 +60,14 @@ void PlayState::init()
 	// set up debug overlay
 	b = mGUI->createBatch("test", "../media/gui/gui.oyster");
 
-	Caption* c = new Caption(b, 0);
+	/*Caption* c = new Caption(b, 0);
 	c->setCaption("FPS: 60");
 	c->setPosition(Vector2(0.01f, 0.9f));
 	mFpsText = c;
 	c = new Caption(b, 0);
 	c->setCaption("Energy: 100");
 	c->setPosition(Vector2(0.01f, 0.94f));
-	mEnergyText = c;
+	mEnergyText = c;*/
 
   mEnergyBar = new Panel(b, 1);
 	mEnergyBar->setPosition(Vector2(0.f, 0.96f));
@@ -80,11 +87,8 @@ void PlayState::init()
 	b->getSignal("update")->addListener(mUI->getSlot("update"));
 	mUI->setHidden(false);
 
-  enemy = new Enemy();
-
   //character = mPhysics->createSphere(0.5f, Vector3(0,10,0));
   //mCam->getSignal("moved")->addListener(m_terrain->getSlot("playerMoved"));
-  mCam->getSignal("moved")->addListener(enemy->getSlot("playerMoved"));
   cct = mPhysics->createQuantaCCT(Vector3(0,200,0));
   walkTime = 0.f;
 
@@ -183,6 +187,19 @@ void PlayState::update(Real delta)
 	Real len = moveVect.normalize();
 	len *= 2.f;
 
+  if ((timeLived > 25.f && enemies.size() < 1)
+      || (timeLived > 120.f && enemies.size() < 2)
+      || (timeLived > 240.f && enemies.size() < 3)) {
+    Vector3 ppos = mCam->getPosition();
+    Vector3 pdir = mCam->getDirection();
+    pdir.y = 0;
+    pdir *= -1; // spawn behind player
+    pdir.normalize();
+    pdir *= 250.f;
+    enemies.push_back(new Enemy(ppos + pdir));
+    mCam->getSignal("moved")->addListener(enemies.back()->getSlot("playerMoved"));
+  }
+
   bool sprint = mInput->isKeyDown("KC_LSHIFT");
 
   cct->move(moveVect, sprint ? 20.f : 7.f);
@@ -199,6 +216,12 @@ void PlayState::update(Real delta)
   float sp = sprint ? 20.f / 5.f : 1.f;
   Vector3 headBob(0.f, 0.8f + sin(walkTime * 12.f) * sp * 0.1f, 0.f);
 
+  if (!moveVect.isZeroLength()) {
+    playerEnergy -= delta * (sprint ? 1.5f : 0.3f);
+  } else {
+    playerEnergy -= delta * 0.1f;
+  }
+
   if (footTime < 0.f) {
     footTime = 0.2f;
     left_foot = !left_foot;
@@ -207,7 +230,6 @@ void PlayState::update(Real delta)
       (left_foot ? mCam->mCamera->getAbsoluteLeft() * 0.5f : mCam->mCamera->getAbsoluteRight() * 0.5f ), Vector3::NEGATIVE_UNIT_Y, 2.f, 0x1, 0x1);
 
     if (r.hit && r.group == 0x2) {
-      std::cout<<"STEP "<<r.group<<"\n";
       ++foot_idx;
       if (foot_idx >= NUM_FOOTSTEPS) {
         foot_idx = 0;
@@ -222,6 +244,11 @@ void PlayState::update(Real delta)
 
       r.position += Vector3(0,0,0);
       float* buf = &footsteps.vertices[foot_idx * 12];
+      /*if (left_foot) {
+        dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/leftfoot.ogg")->setGain(0.f, 1.f, 1.f);;
+      } else {
+        dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/rightfoot.ogg")->setGain(0.f, 1.f, 1.f);;
+      }*/
 
       Vector3 zb = moveVect;
       moveVect.normalize();
@@ -265,14 +292,16 @@ void PlayState::update(Real delta)
 	if(mInput->wasKeyPressed("KC_ESCAPE"))
 		mEngine->shutdown();
 
-	if(mInput->wasKeyPressed("KC_SPACE"))
+	if(mInput->wasKeyPressed("KC_SPACE")) {
     cct->jump(12.f);
+    dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/jump.ogg")->setGain(0.f, 1.f, 1.f);
+  }
 	// screenshots
 	if(mInput->wasKeyPressed("KC_P"))
 		mGfx->takeScreenshot(TimeManager::getPtr()->getTimestamp());
 
 	// update debug overlay
-	mFpsText->setCaption("FPS: "+ StringUtils::toString(1.f/delta));
+	//mFpsText->setCaption("FPS: "+ StringUtils::toString(1.f/delta));
   if (playerEnergy <= 0.f && !gameover) {
     gameover = true;
     Panel* pan = new Panel(b, 0);
@@ -344,15 +373,21 @@ void PlayState::update(Real delta)
     c->setTextHorizontalAlign(HA_CENTER);
 
     // game over man, game over!
-    mEnergyText->setCaption("Energy: 0");
+    //mEnergyText->setCaption("Energy: 0");
     TimeManager::getPtr()->setTimeSpeed(0.f);
     EventHandler::getDestination("OISSubsystem")->getSignal("mouseMoved")->removeAllListeners();
+    dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/fail.ogg")->setGain(0.f, 1.f, 1.f);
   } else if (!gameover) {
-    mEnergyText->setCaption("Energy: "+ StringUtils::toString(playerEnergy));
+    //mEnergyText->setCaption("Energy: "+ StringUtils::toString(playerEnergy));
     mEnergyBar->setScale(0.4 * (playerEnergy / 100.f), 0.02);
     mEnergyBar->setHorizontalAlign(HA_CENTER);
     mEnergyBarCap->setScale(0.4 * (playerEnergyCap / 100.f), 0.02);
     mEnergyBarCap->setHorizontalAlign(HA_CENTER);
+    if (playerEnergy < 20.f) {
+      mEnergyBarCap->setColor(Colour( ((sin(timeLived * 5) + 1.0) / 4) + 0.2,0.2,0.2, 0.5f));
+    } else {
+      mEnergyBarCap->setColor(Colour(0.2,0.2,0.2, 0.5f));
+    }
   }
 
   // lololol this is terribad

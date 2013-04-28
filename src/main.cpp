@@ -25,12 +25,19 @@ int main(int argc, char** argv)
 	// initialize the engine
 	eng->init();
 
+  //SoundPtr s = aSys.play2D("../media/audio/music.ogg");
+  //s->setGain(0.f,0.3f,0.3f);
+  //s->setLooping(false);
+
 	// add game state
 	eng->addState(new PlayState());
 	//eng->addState(new MenuState());
 
 	// start up the engine
 	eng->start();
+
+  //s->stop();
+  //s.setNull();
 
 	// delete the engine object
 	delete eng;

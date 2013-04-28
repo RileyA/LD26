@@ -15,7 +15,7 @@
 class Enemy : public Object {
 public:
 
-  Enemy();
+  Enemy(Vector3 pos);
   ~Enemy();
 
   void update(Real delta);

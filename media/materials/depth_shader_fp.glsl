@@ -5,7 +5,7 @@ uniform vec4 invTex;
 
 void main() {
 
-  // take 8 samples
+  // laplacian dat
   float samples[8];
   samples[0] = texture2D(depthRt, uv + vec2(-invTex.x, 0)).x;
   samples[6] = texture2D(depthRt, uv + vec2(0, invTex.y)).x;

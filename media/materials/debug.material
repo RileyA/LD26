@@ -28,6 +28,22 @@ fragment_program Terrain_FP glsl
 	source terrain_fp.glsl
 }
 
+material depthcaster {
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+      
+    }
+  }
+}
 
 material Terrain {
   technique {
@@ -273,6 +289,7 @@ material Ruins002 {
         param_named diffuseMap int 0
 				param_named_auto eye_pos camera_position_object_space
 				//param_named_auto eye_dir view_direction
+        param_named_auto texViewProj texture_viewproj_matrix
 			}
     }
 
@@ -308,176 +325,31 @@ material Ruins002 {
   }
 }
 
-material Ruins003 {
-
+material Ruins003 : Ruins002 {
   technique {
     pass {
-			cull_hardware none
-			cull_software none
-      //ambient vertexcolour
-			cull_hardware none
-			cull_software none
-			lighting off
-      //polygon_mode wireframe
       texture_unit {
         texture Ruins003.png
       }
-
-			vertex_program_ref Ruins_VP
-			{
-			}
-			fragment_program_ref Ruins_FP
-			{
-        param_named diffuseMap int 0
-				param_named_auto eye_pos camera_position_object_space
-				//param_named_auto eye_dir view_direction
-			}
-    }
-
-    pass {
-      scene_blend add
-      iteration once_per_light spot
-			cull_hardware none
-			cull_software none
-
-			vertex_program_ref Spot_VP
-			{
-        param_named_auto lp light_position_object_space 0
-			}
-			fragment_program_ref Spot_FP
-			{
-        param_named_auto ldr light_direction_object_space 0
-        param_named_auto spotParams spotlight_params 0
-			}
-    }
-  }
-  technique {
-      scheme depth
-      pass {
-        cull_hardware none
-        cull_software none
-      vertex_program_ref DepthCaster_VP
-      {
-      }
-      fragment_program_ref DepthCaster_FP
-      {
-      }
     }
   }
 }
 
-
-material Ruins004 {
-
+material Ruins004 : Ruins002 {
   technique {
     pass {
-			cull_hardware none
-			cull_software none
-      //ambient vertexcolour
-			cull_hardware none
-			cull_software none
-			lighting off
-      //polygon_mode wireframe
       texture_unit {
         texture Ruins004.png
       }
-
-			vertex_program_ref Ruins_VP
-			{
-			}
-			fragment_program_ref Ruins_FP
-			{
-        param_named diffuseMap int 0
-				param_named_auto eye_pos camera_position_object_space
-				//param_named_auto eye_dir view_direction
-			}
-    }
-
-    pass {
-      scene_blend add
-      iteration once_per_light spot
-			cull_hardware none
-			cull_software none
-
-			vertex_program_ref Spot_VP
-			{
-        param_named_auto lp light_position_object_space 0
-			}
-			fragment_program_ref Spot_FP
-			{
-        param_named_auto ldr light_direction_object_space 0
-        param_named_auto spotParams spotlight_params 0
-			}
-    }
-  }
-  technique {
-      scheme depth
-      pass {
-        cull_hardware none
-        cull_software none
-      vertex_program_ref DepthCaster_VP
-      {
-      }
-      fragment_program_ref DepthCaster_FP
-      {
-      }
     }
   }
 }
 
-material Ruins005 {
-
+material Ruins005 : Ruins002 {
   technique {
     pass {
-			cull_hardware none
-			cull_software none
-      //ambient vertexcolour
-			cull_hardware none
-			cull_software none
-			lighting off
-      //polygon_mode wireframe
       texture_unit {
         texture Ruins005.png
-      }
-
-			vertex_program_ref Ruins_VP
-			{
-			}
-			fragment_program_ref Ruins_FP
-			{
-        param_named diffuseMap int 0
-				param_named_auto eye_pos camera_position_object_space
-				//param_named_auto eye_dir view_direction
-			}
-    }
-
-    pass {
-      scene_blend add
-      iteration once_per_light spot
-			cull_hardware none
-			cull_software none
-
-			vertex_program_ref Spot_VP
-			{
-        param_named_auto lp light_position_object_space 0
-			}
-			fragment_program_ref Spot_FP
-			{
-        param_named_auto ldr light_direction_object_space 0
-        param_named_auto spotParams spotlight_params 0
-			}
-    }
-  }
-  technique {
-      scheme depth
-      pass {
-        cull_hardware none
-        cull_software none
-      vertex_program_ref DepthCaster_VP
-      {
-      }
-      fragment_program_ref DepthCaster_FP
-      {
       }
     }
   }

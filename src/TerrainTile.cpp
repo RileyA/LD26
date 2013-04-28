@@ -18,9 +18,9 @@ TerrainTile::TerrainTile(iVec2 position, noise::module::Perlin* p, Signal* pmove
   for (int z = -1; z < VERTS_Z + 2; ++z) {
     for (int x = -1; x < VERTS_X + 2; ++x) {
       heights[1 + x + (VERTS_X + 3) * (z + 1)] = m_perlin->GetValue(
-        static_cast<double>(pos.x + x * (SIZE_X / VERTS_X)) * 0.003,
+        static_cast<double>(pos.x + x * (SIZE_X / VERTS_X)) * 0.0035,
         static_cast<double>(0.0),
-        static_cast<double>(pos.z + z * (SIZE_Z / VERTS_Z)) * 0.003
+        static_cast<double>(pos.z + z * (SIZE_Z / VERTS_Z)) * 0.0035
         );
 
       /*float h = heights[1 + x + (VERTS_X + 3) * (z + 1)];
@@ -31,7 +31,7 @@ TerrainTile::TerrainTile(iVec2 position, noise::module::Perlin* p, Signal* pmove
     }
   }
 
-  int num_rois = Rand::get().gen(0, 50) - 20;
+  int num_rois = Rand::get().gen(0, 100) - 98;
   std::vector<ROI> rois;
   for (int i = 0; i < num_rois; ++i) {
     ROI r;

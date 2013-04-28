@@ -34,9 +34,11 @@ void Powerup::playerMoved(const Message& msg) {
   {
     if (ms->data.squaredDistance(position) < 2.25f) {
       if (super) {
+        dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/powerup.ogg")->setGain(0.f, 1.f, 1.f);;
         PlayState::playerEnergy = PlayState::playerEnergyCap = PlayState::playerEnergyCap + 10;
       } else {
-        PlayState::playerEnergy = std::min(PlayState::playerEnergy + 40, PlayState::playerEnergyCap);
+        dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/powerup2.ogg")->setGain(0.f, 1.f, 1.f);
+        PlayState::playerEnergy = std::min(PlayState::playerEnergy + 50, PlayState::playerEnergyCap);
       }
       dead = true;
     }

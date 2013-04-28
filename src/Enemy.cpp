@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "PlayState.h"
 
-Enemy::Enemy() {
+Enemy::Enemy(Vector3 startpos) {
   bob = 0;
 	mGfx = dynamic_cast<OgreSubsystem*>(Engine::getPtr()->getSubsystem("OgreSubsystem"));
 	mPhysics = dynamic_cast<BulletSubsystem*>(Engine::getPtr()->getSubsystem("BulletSubsystem"));
@@ -21,7 +21,8 @@ Enemy::Enemy() {
   light->pitch(20.0);
 
   m_dir = Vector3(0,0,-1);
-  m_pos = Vector3(0,20,0);
+  m_pos = startpos;
+  startpos.y = 20;
 
   m_state = ES_WAIT;
   waitTimer = 10.f;
@@ -72,7 +73,7 @@ void Enemy::update(Real delta) {
       if (waitTimer < 0.f) {
         m_state = ES_PATROL;
         decidePatrol();
-        std::cout<<"PATROL!\n";
+        //std::cout<<"PATROL!\n";
       }
       break;
     case ES_PATROL:
@@ -236,7 +237,7 @@ void Enemy::decidePatrol(bool search) {
     m_path->addPoint(m_patrol.back());
   }
   m_path->recalc();
-  std::cout<<"Path len: "<<path_len<<"\n";
+  //std::cout<<"Path len: "<<path_len<<"\n";
 }
 
 void Enemy::checkLOS(Real delta) {
@@ -255,10 +256,12 @@ void Enemy::checkLOS(Real delta) {
       los_time += delta;
       if (los_time > 0.1f && m_state != ES_COMBAT) {
         m_state = ES_COMBAT;
-        std::cout<<"I SEE U\n";
+        //std::cout<<"I SEE U\n";
         los_time = 0;
       } else if (los_time > 1.1f && m_state == ES_COMBAT && m_minis.size() > 0 && !m_minis.back()->attack) {
-        std::cout<<"ATTAAAACCKKK\n";
+        //std::cout<<"ATTAAAACCKKK\n";
+
+      dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/attack.ogg")->setGain(0.f, 1.f, 1.f);
 
         m_minis.back()->attack = true;
         Vector3 wpos = m_minis.back()->m_mesh->getAbsolutePosition();
@@ -287,7 +290,7 @@ void Enemy::checkLOS(Real delta) {
   }
       //printf("%f.\n", los_time);
   if (los_time < -0.1 && m_state == ES_COMBAT) {
-    std::cout<<"WHERE'D HE GOOOOO???\n";
+    //std::cout<<"WHERE'D HE GOOOOO???\n";
     decidePatrol(true);
     m_state = ES_PATROL;
   }
@@ -309,6 +312,8 @@ void Enemy::MiniEnemy::update(Real delta) {
       m_expl = m_parent->mGfx->createMesh("explode.mesh");
       m_expl->setPosition(r.position);
       m_parent->mGfx->getRootSceneNode()->addChild(m_expl);
+      dynamic_cast<ALSubsystem*>(Engine::getPtr()->getSubsystem("ALSubsystem"))->play2D("../media/audio/explode.ogg")->setGain(0.f, 1.f, 1.f);
+
     } else {
       m_mesh->setPosition(m_mesh->getPosition() + attack_dir * dist);
     }
