@@ -21,10 +21,10 @@ namespace noise
 class TerrainManager : public Object {
 public:
 
-  const static int PAGE_RADIUS = 2;
-  const static int UNPAGE_RADIUS = 3;
+  const static int PAGE_RADIUS = 4;
+  const static int UNPAGE_RADIUS = 5;
   
-  TerrainManager();
+  TerrainManager(Signal* pmove);
   ~TerrainManager();
 
   void update(Real delta);
@@ -36,6 +36,7 @@ private:
   void killTerrainTile(iVec2 pos);
   void killTerrainTile(TerrainTile* t);
   void updateTiles(iVec2 pos);
+  double sampleNoise(Vector3 pos);
 
 	noise::module::Perlin* m_perlin;
 	//noise::module::RidgedMulti* m_ridged;
@@ -44,6 +45,10 @@ private:
   std::map<iVec2, TerrainTile*> m_tiles;
 
   OgreSubsystem* mGfx;
+  BulletSubsystem* mPhysics;
+
+  Signal* playerMv;
+
   
 };
 

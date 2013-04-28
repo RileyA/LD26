@@ -35,7 +35,7 @@ namespace Oryx
 		mPitchNode->addChild(mRollNode);
 		mRollNode->addChild(mCamera);
 
-		mCamera->setFOV(50.f);
+		mCamera->setFOV(75.f);
 	}
 
 	void FPSCamera::update(Real delta)

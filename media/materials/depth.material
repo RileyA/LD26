@@ -1,0 +1,35 @@
+vertex_program DepthShader_VP glsl
+{
+	source depth_shader_vp.glsl
+}
+
+fragment_program DepthShader_FP glsl
+{
+	source depth_shader_fp.glsl
+}
+
+material DepthShader {
+  technique {
+      pass
+      {
+         vertex_program_ref DepthShader_VP
+         {
+         }
+
+         fragment_program_ref DepthShader_FP
+         {
+            param_named rt int 0
+            param_named depthRt int 1
+            param_named_auto invTex inverse_texture_size 1
+         }
+         
+         texture_unit
+         {
+         }
+         texture_unit
+         {
+         }
+      }
+  }
+}
+

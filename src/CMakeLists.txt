@@ -13,6 +13,10 @@ set(SOURCE_FILES
 	ThreadPool.cpp
   TerrainTile.cpp
   TerrainManager.cpp
+  Enemy.cpp
+  Ruins.cpp
+  Powerup.cpp
+  MenuState.cpp
 	)
 
 set(HEADER_FILES
@@ -22,6 +26,10 @@ set(HEADER_FILES
   TerrainTile.h
   TerrainManager.h
   iVec2.h
+  Enemy.h
+  Ruins.h
+  MenuState.h
+  Powerup.h
 	)
 
 add_executable(ld26 ${SOURCE_FILES} ${HEADER_FILES} )

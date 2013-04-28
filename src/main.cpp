@@ -1,5 +1,6 @@
 #include "Common.h"
 #include "PlayState.h"
+#include "MenuState.h"
 
 int main(int argc, char** argv)
 {
@@ -26,6 +27,7 @@ int main(int argc, char** argv)
 
 	// add game state
 	eng->addState(new PlayState());
+	//eng->addState(new MenuState());
 
 	// start up the engine
 	eng->start();

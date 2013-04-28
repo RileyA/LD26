@@ -1,37 +1,586 @@
-material DebugWire
+vertex_program Spot_VP glsl
 {
-	technique
-	{
-		pass
-		{
-			cull_hardware none
-			cull_software none
-			//depth_check off	
-			lighting off
-      //polygon_mode wireframe
-      scene_blend alpha_blend
-      texture_unit
-      {
-        anim_texture save.png 32 2.5
-        scale 0.5 0.5
-        filtering aniosotropic
-        max_anisotropy 16
-        tex_address_mode wrap
-      }
-		}
-	}
+	source spot_vp.glsl
 }
+
+fragment_program Spot_FP glsl
+{
+	source spot_fp.glsl
+}
+
+vertex_program DepthCaster_VP glsl
+{
+	source depth_caster_vp.glsl
+}
+
+fragment_program DepthCaster_FP glsl
+{
+	source depth_caster_fp.glsl
+}
+
+vertex_program Terrain_VP glsl
+{
+	source terrain_vp.glsl
+}
+
+fragment_program Terrain_FP glsl
+{
+	source terrain_fp.glsl
+}
+
 
 material Terrain {
   technique {
     pass {
 			cull_hardware none
 			cull_software none
-      ambient vertexcolour
+      //ambient vertexcolour
 			cull_hardware none
 			cull_software none
 			lighting off
-      polygon_mode wireframe
+      //polygon_mode wireframe
+
+			vertex_program_ref Terrain_VP
+			{
+			}
+			fragment_program_ref Terrain_FP
+			{
+				param_named_auto eye_pos camera_position_object_space
+			}
     }
+
+    pass {
+      scene_blend add
+      iteration once_per_light spot
+			cull_hardware none
+			cull_software none
+
+			vertex_program_ref Spot_VP
+			{
+        param_named_auto lp light_position_object_space 0
+			}
+			fragment_program_ref Spot_FP
+			{
+        param_named_auto ldr light_direction_object_space 0
+        param_named_auto spotParams spotlight_params 0
+			}
+    }
+  }
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+    }
+  }
+}
+
+vertex_program Ruins_VP glsl
+{
+	source ruins_vp.glsl
+}
+
+fragment_program Ruins_FP glsl
+{
+	source ruins_fp.glsl
+}
+
+vertex_program Emit_VP glsl
+{
+	source emit_vp.glsl
+}
+
+fragment_program Emit_FP glsl
+{
+	source emit_fp.glsl
+}
+
+material Ruins001 {
+
+  technique {
+    pass {
+			cull_hardware none
+			cull_software none
+      //ambient vertexcolour
+			cull_hardware none
+			cull_software none
+			lighting off
+      //polygon_mode wireframe
+      texture_unit {
+        texture Ruins1_ao.png.tga
+      }
+
+			vertex_program_ref Ruins_VP
+			{
+			}
+			fragment_program_ref Ruins_FP
+			{
+        param_named diffuseMap int 0
+				param_named_auto eye_pos camera_position_object_space
+				//param_named_auto eye_dir view_direction
+			}
+    }
+
+    pass {
+      scene_blend add
+      iteration once_per_light spot
+			cull_hardware none
+			cull_software none
+
+			vertex_program_ref Spot_VP
+			{
+        param_named_auto lp light_position_object_space 0
+			}
+			fragment_program_ref Spot_FP
+			{
+        param_named_auto ldr light_direction_object_space 0
+        param_named_auto spotParams spotlight_params 0
+			}
+    }
+  }
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+    }
+  }
+}
+
+material Enemy {
+
+  technique {
+    pass {
+			cull_hardware none
+			cull_software none
+      //ambient vertexcolour
+			cull_hardware none
+			cull_software none
+			lighting off
+      //polygon_mode wireframe
+      texture_unit {
+        texture Enemy.png.tga
+      }
+
+			vertex_program_ref Emit_VP
+			{
+			}
+			fragment_program_ref Emit_FP
+			{
+        param_named diffuseMap int 0
+				param_named_auto eye_pos camera_position_object_space
+				//param_named_auto eye_dir view_direction
+			}
+    }
+  }
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+    }
+  }
+}
+
+material enemy_glow {
+  technique {
+    pass {
+      scene_blend alpha_blend
+      texture_unit {
+        texture enemy_glow.png
+      }
+      depth_write off
+    }
+  }
+  technique {
+    scheme depth
+  }
+}
+
+material spot_beam {
+  technique {
+    pass {
+        cull_hardware none
+        cull_software none
+      scene_blend alpha_blend
+      texture_unit {
+        texture spotbeam.png
+      }
+      depth_write off
+    }
+  }
+  technique {
+    scheme depth
+  }
+}
+
+material boom {
+  technique {
+    pass {
+        cull_hardware none
+        cull_software none
+      scene_blend alpha_blend
+      texture_unit {
+        texture boom.png
+      }
+      depth_write off
+    }
+  }
+  technique {
+    scheme depth
+  }
+}
+
+
+material Ruins002 {
+
+  technique {
+    pass {
+			cull_hardware none
+			cull_software none
+      //ambient vertexcolour
+			cull_hardware none
+			cull_software none
+			lighting off
+      //polygon_mode wireframe
+      texture_unit {
+        texture Ruins002.png
+      }
+
+			vertex_program_ref Ruins_VP
+			{
+			}
+			fragment_program_ref Ruins_FP
+			{
+        param_named diffuseMap int 0
+				param_named_auto eye_pos camera_position_object_space
+				//param_named_auto eye_dir view_direction
+			}
+    }
+
+    pass {
+      scene_blend add
+      iteration once_per_light spot
+			cull_hardware none
+			cull_software none
+
+			vertex_program_ref Spot_VP
+			{
+        param_named_auto lp light_position_object_space 0
+			}
+			fragment_program_ref Spot_FP
+			{
+        param_named_auto ldr light_direction_object_space 0
+        param_named_auto spotParams spotlight_params 0
+			}
+    }
+  }
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+    }
+  }
+}
+
+material Ruins003 {
+
+  technique {
+    pass {
+			cull_hardware none
+			cull_software none
+      //ambient vertexcolour
+			cull_hardware none
+			cull_software none
+			lighting off
+      //polygon_mode wireframe
+      texture_unit {
+        texture Ruins003.png
+      }
+
+			vertex_program_ref Ruins_VP
+			{
+			}
+			fragment_program_ref Ruins_FP
+			{
+        param_named diffuseMap int 0
+				param_named_auto eye_pos camera_position_object_space
+				//param_named_auto eye_dir view_direction
+			}
+    }
+
+    pass {
+      scene_blend add
+      iteration once_per_light spot
+			cull_hardware none
+			cull_software none
+
+			vertex_program_ref Spot_VP
+			{
+        param_named_auto lp light_position_object_space 0
+			}
+			fragment_program_ref Spot_FP
+			{
+        param_named_auto ldr light_direction_object_space 0
+        param_named_auto spotParams spotlight_params 0
+			}
+    }
+  }
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+    }
+  }
+}
+
+
+material Ruins004 {
+
+  technique {
+    pass {
+			cull_hardware none
+			cull_software none
+      //ambient vertexcolour
+			cull_hardware none
+			cull_software none
+			lighting off
+      //polygon_mode wireframe
+      texture_unit {
+        texture Ruins004.png
+      }
+
+			vertex_program_ref Ruins_VP
+			{
+			}
+			fragment_program_ref Ruins_FP
+			{
+        param_named diffuseMap int 0
+				param_named_auto eye_pos camera_position_object_space
+				//param_named_auto eye_dir view_direction
+			}
+    }
+
+    pass {
+      scene_blend add
+      iteration once_per_light spot
+			cull_hardware none
+			cull_software none
+
+			vertex_program_ref Spot_VP
+			{
+        param_named_auto lp light_position_object_space 0
+			}
+			fragment_program_ref Spot_FP
+			{
+        param_named_auto ldr light_direction_object_space 0
+        param_named_auto spotParams spotlight_params 0
+			}
+    }
+  }
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+    }
+  }
+}
+
+material Ruins005 {
+
+  technique {
+    pass {
+			cull_hardware none
+			cull_software none
+      //ambient vertexcolour
+			cull_hardware none
+			cull_software none
+			lighting off
+      //polygon_mode wireframe
+      texture_unit {
+        texture Ruins005.png
+      }
+
+			vertex_program_ref Ruins_VP
+			{
+			}
+			fragment_program_ref Ruins_FP
+			{
+        param_named diffuseMap int 0
+				param_named_auto eye_pos camera_position_object_space
+				//param_named_auto eye_dir view_direction
+			}
+    }
+
+    pass {
+      scene_blend add
+      iteration once_per_light spot
+			cull_hardware none
+			cull_software none
+
+			vertex_program_ref Spot_VP
+			{
+        param_named_auto lp light_position_object_space 0
+			}
+			fragment_program_ref Spot_FP
+			{
+        param_named_auto ldr light_direction_object_space 0
+        param_named_auto spotParams spotlight_params 0
+			}
+    }
+  }
+  technique {
+      scheme depth
+      pass {
+        cull_hardware none
+        cull_software none
+      vertex_program_ref DepthCaster_VP
+      {
+      }
+      fragment_program_ref DepthCaster_FP
+      {
+      }
+    }
+  }
+}
+
+material Ruins006 : Ruins002 {
+  technique {
+    pass {
+      texture_unit {
+        texture Ruins006.png
+      }
+    }
+  }
+}
+
+material Ruins007 : Ruins002 {
+  technique {
+    pass {
+      texture_unit {
+        texture Ruins007.png
+      }
+    }
+  }
+}
+
+material Ruins008 : Ruins002 {
+  technique {
+    pass {
+      texture_unit {
+        texture Ruins008.png
+      }
+    }
+  }
+}
+
+material PowerPack : Ruins002 {
+  technique {
+    pass {
+      texture_unit {
+        texture PowerPack.png.tga
+      }
+    }
+  }
+}
+
+material PowerPackGlow {
+  technique {
+    pass {
+      scene_blend alpha_blend
+      texture_unit {
+        texture PowerPack.png.tga
+      }
+      depth_write off
+    }
+  }
+  technique {
+    scheme depth
+  }
+}
+
+material PowerPackSuper : Ruins002 {
+  technique {
+    pass {
+      texture_unit {
+        texture PowerPack_super.png
+      }
+    }
+  }
+}
+
+material PowerPackGlowSuper {
+  technique {
+    pass {
+      scene_blend alpha_blend
+      texture_unit {
+        texture PowerPack_super.png
+      }
+      depth_write off
+    }
+  }
+  technique {
+    scheme depth
+  }
+}
+
+material footsteps {
+  technique {
+    pass {
+      scene_blend add
+      cull_hardware none
+      cull_software none
+      ambient 1 1 1 1
+      emissive 1 1 1 1
+      depth_bias 10
+      depth_write off
+      texture_unit {
+        texture foot.png
+        filtering anisotropic
+        max_anisotropy 16
+      }
+    }
+  }
+  technique {
+    scheme depth
   }
 }

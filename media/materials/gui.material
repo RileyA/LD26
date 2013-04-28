@@ -12,9 +12,12 @@ material DebugUI
 			texture_unit
 			{
 				texture gui.png
-				filtering trilinear
-				//tex_address_mode clamp
+				//filtering trilinear
+				tex_address_mode clamp
 			}
 		}
 	}
+  technique {
+    scheme depth
+  }
 }
