@@ -11,7 +11,9 @@ TerrainManager::TerrainManager(Signal* pmove) {
 }
 
 TerrainManager::~TerrainManager() {
-  delete m_perlin;
+  #ifndef WIN32
+  delete m_perlin; // #ifdef this out because it crashes windows... so we'll just leak it...
+  #endif
   for (std::map<iVec2, TerrainTile*>::iterator it = m_tiles.begin(); it != m_tiles.end(); ++it) {
     delete it->second;
   }
