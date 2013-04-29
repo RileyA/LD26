@@ -57,6 +57,7 @@ set(BOOST_LIB ${BOOST_THREAD_LIB} ${BOOST_TIME_LIB})
 
 include_directories("${ORYX_INCLUDE_DIR}")
 include_directories("${BOOST_INCLUDE_DIR}")
+include_directories("${NOISE_INCLUDE_DIR}")
 include_directories("${ORYX_SUBSYSTEM_INCLUDE_DIR}")
 include_directories("src")
 
