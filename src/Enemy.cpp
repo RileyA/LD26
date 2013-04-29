@@ -203,6 +203,15 @@ Enemy::MiniEnemy::MiniEnemy(Enemy* parent) {
 
 Enemy::MiniEnemy::~MiniEnemy() {
   // TODO
+  if (n) {
+    m_parent->mGfx->destroySceneNode(n);
+  }
+  if (m_mesh) {
+    m_parent->mGfx->destroySceneNode(m_mesh);
+  }
+  if (m_expl) {
+    m_parent->mGfx->destroySceneNode(m_expl);
+  }
 }
 
 void Enemy::decidePatrol(bool search) {
@@ -280,6 +289,7 @@ void Enemy::checkLOS(Real delta) {
         m_minis.back()->n->removeChild(m_minis.back()->m_mesh);
         mGfx->getRootSceneNode()->addChild(m_minis.back()->m_mesh);
         mGfx->destroySceneNode(m_minis.back()->n);
+        m_minis.back()->n = NULL;
         m_minis.back()->m_mesh->setPosition(wpos);
         Vector3 ad = playerPos - wpos;
         ad.normalize();
@@ -333,9 +343,9 @@ void Enemy::MiniEnemy::update(Real delta) {
     // TODO explosion effect, sfx, etc
     explode_anim += delta * 10;
     if (m_mesh) {
-      //m_parent->mGfx->getRootSceneNode()->removeChild(m_mesh);
-      //m_parent->mGfx->destroySceneNode(m_mesh);
-      //m_mesh = NULL;
+      m_parent->mGfx->getRootSceneNode()->removeChild(m_mesh);
+      m_parent->mGfx->destroySceneNode(m_mesh);
+      m_mesh = NULL;
     }
     float s = explode_anim * explode_anim;
     m_expl->setScale(Vector3(s,s,s));
@@ -346,9 +356,10 @@ void Enemy::MiniEnemy::update(Real delta) {
     }
 
     if (explode_anim > 3.9f) {
-      //m_parent->mGfx->getRootSceneNode()->removeChild(m_expl);
-      //m_parent->mGfx->destroySceneNode(m_expl);
-      //m_expl = NULL;
+      m_parent->mGfx->getRootSceneNode()->removeChild(m_expl);
+      m_parent->mGfx->destroySceneNode(m_expl);
+      m_expl = NULL;
+      dead = true;
     }
   }
 }

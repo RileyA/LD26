@@ -39,7 +39,7 @@ void PlayState::init()
   mAudio->loadSound("../media/audio/powerup2.ogg");
 
 	// start up input, grab the mouse
-	mInput->initInput(mGfx->getWindowHandle(), true);
+	mInput->initInput(mGfx->getWindowHandle(), false);
 
 	// start up bullet for collision detection
 	mPhysics->startSimulation();
@@ -193,12 +193,13 @@ void PlayState::update(Real delta)
 	Real len = moveVect.normalize();
 	len *= 2.f;
 
-  if ((timeLived > 1.f && enemies.size() < 1)
+  if ((timeLived > 30.f && enemies.size() < 1)
       || (timeLived > 120.f && enemies.size() < 2)
       || (timeLived > 240.f && enemies.size() < 3)) {
     Vector3 ppos = mCam->getPosition();
     Vector3 pdir = mCam->getDirection();
     pdir.y = 0;
+    ppos.y = 0;
     pdir *= -1; // spawn behind player
     pdir.normalize();
     pdir *= 250.f;
@@ -409,6 +410,9 @@ void PlayState::deinit() {
     delete enemies[i];
   }
   enemies.clear();*/
+  mGfx->getRootSceneNode()->removeChild(fsmesh);
+  mGfx->destroySceneNode(fsmesh);
+  fsmesh = NULL;
 }
 //---------------------------------------------------------------------------
 
