@@ -39,7 +39,7 @@ TerrainTile::TerrainTile(iVec2 position, noise::module::Perlin* p, Signal* pmove
     }
   }
 
-  int num_rois = Rand::get().gen(0, 100) - 98;
+  int num_rois = Rand::get().gen(0, 100) - 97;
   std::vector<ROI> rois;
   for (int i = 0; i < num_rois; ++i) {
     ROI r;

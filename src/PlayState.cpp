@@ -39,7 +39,7 @@ void PlayState::init()
   mAudio->loadSound("../media/audio/powerup2.ogg");
 
 	// start up input, grab the mouse
-	mInput->initInput(mGfx->getWindowHandle(), false);
+	mInput->initInput(mGfx->getWindowHandle(), true);
 
 	// start up bullet for collision detection
 	mPhysics->startSimulation();

@@ -35,6 +35,7 @@ private:
 	// GUI Mesh
 	ScreenMesh* mUI;
   Batch* b;
+  bool delay;
 };
 
 #endif
