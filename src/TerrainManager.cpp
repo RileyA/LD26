@@ -12,6 +12,10 @@ TerrainManager::TerrainManager(Signal* pmove) {
 
 TerrainManager::~TerrainManager() {
   delete m_perlin;
+  for (std::map<iVec2, TerrainTile*>::iterator it = m_tiles.begin(); it != m_tiles.end(); ++it) {
+    delete it->second;
+  }
+  m_tiles.clear();
 }
 
 void TerrainManager::update(Real delta) {

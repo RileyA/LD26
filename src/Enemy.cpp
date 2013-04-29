@@ -21,8 +21,8 @@ Enemy::Enemy(Vector3 startpos) {
   light->pitch(20.0);
 
   m_dir = Vector3(0,0,-1);
-  m_pos = startpos;
   startpos.y = 20;
+  m_pos = startpos;
 
   m_state = ES_WAIT;
   waitTimer = 10.f;
@@ -35,6 +35,16 @@ Enemy::Enemy(Vector3 startpos) {
 Enemy::~Enemy() {
   // TODO
   delete m_path;
+  for (int i = 0; i < m_minis.size(); ++i) {
+    delete m_minis[i];
+  }
+  m_minis.clear();
+  mGfx->getRootSceneNode()->removeChild(m_mesh);
+  m_mesh->removeChild(light);
+  m_mesh->removeChild(bs);
+  mGfx->destroySceneNode(m_mesh);
+  mGfx->destroySceneNode(bs);
+  mGfx->destroySceneNode(light);
 }
 
 void Enemy::playerMoved(const Message& msg) {
@@ -170,6 +180,7 @@ void Enemy::update(Real delta) {
   }
 
   if (!m_minis.empty() && m_minis.back()->dead) {
+    delete m_minis.back();
     m_minis.pop_back();
   }
 }
@@ -268,6 +279,7 @@ void Enemy::checkLOS(Real delta) {
         m_mesh->removeChild(m_minis.back()->n);
         m_minis.back()->n->removeChild(m_minis.back()->m_mesh);
         mGfx->getRootSceneNode()->addChild(m_minis.back()->m_mesh);
+        mGfx->destroySceneNode(m_minis.back()->n);
         m_minis.back()->m_mesh->setPosition(wpos);
         Vector3 ad = playerPos - wpos;
         ad.normalize();
@@ -320,7 +332,11 @@ void Enemy::MiniEnemy::update(Real delta) {
   } else if (!dead) {
     // TODO explosion effect, sfx, etc
     explode_anim += delta * 10;
-    m_mesh->setVisible(false);
+    if (m_mesh) {
+      //m_parent->mGfx->getRootSceneNode()->removeChild(m_mesh);
+      //m_parent->mGfx->destroySceneNode(m_mesh);
+      //m_mesh = NULL;
+    }
     float s = explode_anim * explode_anim;
     m_expl->setScale(Vector3(s,s,s));
 
@@ -330,9 +346,9 @@ void Enemy::MiniEnemy::update(Real delta) {
     }
 
     if (explode_anim > 3.9f) {
-      dead = true;
-      m_expl->setVisible(false);
-      m_mesh->setVisible(false);
+      //m_parent->mGfx->getRootSceneNode()->removeChild(m_expl);
+      //m_parent->mGfx->destroySceneNode(m_expl);
+      //m_expl = NULL;
     }
   }
 }

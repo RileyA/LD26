@@ -55,7 +55,7 @@ void PlayState::init()
 
 	// standard FPS-style camera (no character controller just yet)
 	mCam = new FPSCamera();
-  mCam->mPosNode->setPosition(Vector3(0,200,0));
+  mCam->mPosNode->setPosition(Vector3(0,30,0));
 
 	// set up debug overlay
 	b = mGUI->createBatch("test", "../media/gui/gui.oyster");
@@ -89,7 +89,7 @@ void PlayState::init()
 
   //character = mPhysics->createSphere(0.5f, Vector3(0,10,0));
   //mCam->getSignal("moved")->addListener(m_terrain->getSlot("playerMoved"));
-  cct = mPhysics->createQuantaCCT(Vector3(0,200,0));
+  cct = mPhysics->createQuantaCCT(Vector3(0,20,0));
   walkTime = 0.f;
 
   mGfx->addCompositor("Depth");
@@ -133,7 +133,9 @@ void PlayState::init()
   }
   m_terrain = new TerrainManager(mCam->getSignal("moved"));
 
-
+  for (int i = 0; i < 100; ++i) {
+    m_terrain->updateAllTiles(iVec2(0,0));
+  }
 
   footsteps.addTexcoordSet();
   for (int i = 0; i < NUM_FOOTSTEPS; ++i) {
@@ -167,6 +169,8 @@ void PlayState::init()
   left_foot = true;
   foot_idx = 0;
   footTime = 0.3f;
+
+  TimeManager::getPtr()->setTimeSpeed(1.f);
 }
 //---------------------------------------------------------------------------
 
@@ -189,7 +193,7 @@ void PlayState::update(Real delta)
 	Real len = moveVect.normalize();
 	len *= 2.f;
 
-  if ((timeLived > 25.f && enemies.size() < 1)
+  if ((timeLived > 1.f && enemies.size() < 1)
       || (timeLived > 120.f && enemies.size() < 2)
       || (timeLived > 240.f && enemies.size() < 3)) {
     Vector3 ppos = mCam->getPosition();
@@ -401,6 +405,10 @@ void PlayState::update(Real delta)
 //---------------------------------------------------------------------------
 
 void PlayState::deinit() {
+  /*for (int i = 0; i < enemies.size(); ++i) {
+    delete enemies[i];
+  }
+  enemies.clear();*/
 }
 //---------------------------------------------------------------------------
 
