@@ -288,8 +288,6 @@ material Ruins002 {
 			{
         param_named diffuseMap int 0
 				param_named_auto eye_pos camera_position_object_space
-				//param_named_auto eye_dir view_direction
-        param_named_auto texViewProj texture_viewproj_matrix
 			}
     }
 

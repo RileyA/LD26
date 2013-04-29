@@ -7,19 +7,19 @@ void main() {
 
   // laplacian dat
   float samples[8];
-  samples[0] = texture2D(depthRt, uv + vec2(-invTex.x, 0)).x;
-  samples[6] = texture2D(depthRt, uv + vec2(0, invTex.y)).x;
-  samples[7] = texture2D(depthRt, uv + vec2(0, -invTex.y)).x;
-  samples[3] = texture2D(depthRt, uv + vec2(invTex.x, 0)).x;
+  samples[0] = texture2D(depthRt, uv + vec2(-invTex.x, 0.0)).x;
+  samples[6] = texture2D(depthRt, uv + vec2(0.0, invTex.y)).x;
+  samples[7] = texture2D(depthRt, uv + vec2(0.0, -invTex.y)).x;
+  samples[3] = texture2D(depthRt, uv + vec2(invTex.x, 0.0)).x;
   samples[1] = texture2D(depthRt, uv + vec2(-invTex.x, invTex.y)).x;
   samples[2] = texture2D(depthRt, uv + vec2(-invTex.x, -invTex.y)).x;
   samples[4] = texture2D(depthRt, uv + vec2(invTex.x, invTex.y)).x;
   samples[5] = texture2D(depthRt, uv + vec2(invTex.x, -invTex.y)).x;
 
-  float result = texture2D(depthRt, uv).x * 8 -
+  float result = texture2D(depthRt, uv).x * 8.0 -
     (samples[0] + samples[1] + samples[2] + samples[3]
       + samples[4] + samples[5] + samples[6] + samples[7]);
-  result *= 3;
+  result *= 3.0;
 
   //if (result < 0.3) {
   //  result = 0.0;
