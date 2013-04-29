@@ -6,5 +6,5 @@ void main() {
   gl_Position = ftransform();
   normal = gl_Normal;
   pos = gl_Vertex.xyz / gl_Vertex.w;
-  uv = gl_MultiTexCoord0;
+  uv = gl_MultiTexCoord0.xy;
 }
